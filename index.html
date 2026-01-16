@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindful Companion - Mental Health Check-in</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login/Signup Screen -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-card">
+            <div class="auth-header">
+                <span class="logo-icon">🧠</span>
+                <h1>Mindful Companion</h1>
+                <p>Your safe space for daily check-ins</p>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="loginForm">
+                <h2>Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to continue your journey</p>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="error-message" id="loginError"></div>
+                    <button type="submit" class="primary-btn auth-btn">Sign In</button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <a href="#" id="showSignup">Sign Up</a>
+                </p>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signupForm">
+                <h2>Create Account</h2>
+                <p class="auth-subtitle">Start your mental health journey</p>
+                <form id="signupFormElement">
+                    <div class="form-group">
+                        <label for="signupName">Name</label>
+                        <input type="text" id="signupName" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Minimum 8 characters" required minlength="8">
+                        <small class="password-hint">Password must be at least 8 characters long</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPasswordConfirm">Confirm Password</label>
+                        <input type="password" id="signupPasswordConfirm" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="error-message" id="signupError"></div>
+                    <button type="submit" class="primary-btn auth-btn">Create Account</button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <a href="#" id="showLogin">Sign In</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <h1>Mindful Companion</h1>
+            </div>
+            <p class="tagline">Your anonymous, friendly space for daily check-ins</p>
+            <div class="header-actions">
+                <button class="header-icon-btn" id="profileBtn" title="View Profile & Analytics">
+                    <span>👤</span>
+                </button>
+                <button class="header-icon-btn" id="calendarBtn" title="Mood Calendar">
+                    <span>📅</span>
+                </button>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Chat Interface -->
+        <div class="chat-container">
+            <!-- Chatbot Avatar -->
+            <div class="chatbot-avatar">
+                <div class="avatar-circle" id="avatarCircle">
+                    <div class="chibi-character" id="chibiCharacter">
+                        <div class="chibi-body">
+                            <div class="chibi-head">
+                                <div class="chibi-face">
+                                    <div class="chibi-eyes">
+                                        <div class="eye left-eye"></div>
+                                        <div class="eye right-eye"></div>
+                                    </div>
+                                    <div class="chibi-mouth" id="chibiMouth"></div>
+                                </div>
+                                <div class="chibi-hair"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="typing-indicator" id="typingIndicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <p>Hello! 👋 I'm your Mindful Companion. I'm here to listen without judgment.</p>
+                        <p>How are you feeling today? You can share as much or as little as you'd like.</p>
+                    </div>
+                    <div class="message-time"></div>
+                </div>
+            </div>
+
+            <!-- Mood Selector (Hidden by default) -->
+            <div class="mood-selector" id="moodSelector">
+                <p class="mood-prompt">How would you describe your mood right now?</p>
+                <div class="mood-buttons">
+                    <button class="mood-btn" data-mood="great" data-emoji="😄">Great</button>
+                    <button class="mood-btn" data-mood="good" data-emoji="🙂">Good</button>
+                    <button class="mood-btn" data-mood="okay" data-emoji="😐">Okay</button>
+                    <button class="mood-btn" data-mood="not-great" data-emoji="😔">Not Great</button>
+                    <button class="mood-btn" data-mood="struggling" data-emoji="😢">Struggling</button>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-container">
+                    <textarea 
+                        id="userInput" 
+                        placeholder="Type your message here... (Your conversations are anonymous)"
+                        rows="1"
+                    ></textarea>
+                    <button id="sendButton" class="send-button">
+                        <span>Send</span>
+                    </button>
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-btn" id="journalBtn">📝 Journal Entry</button>
+                    <button class="quick-btn" id="moodBtn">😊 Check Mood</button>
+                    <button class="quick-btn" id="resourcesBtn">📚 Resources</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journal Modal -->
+        <div class="modal" id="journalModal">
+            <div class="modal-content">
+                <span class="close" id="closeJournal">&times;</span>
+                <h2>📝 Your Journal Entry</h2>
+                <textarea id="journalText" placeholder="Write whatever comes to mind... This is your safe space." rows="10"></textarea>
+                <div class="modal-actions">
+                    <button id="saveJournal" class="primary-btn">Save Entry</button>
+                    <button id="cancelJournal" class="secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Counselor Contact Modal -->
+        <div class="modal" id="counselorModal">
+            <div class="modal-content">
+                <span class="close" id="closeCounselor">&times;</span>
+                <h2>💚 Support Available</h2>
+                <p>We've noticed you might benefit from talking to someone. Would you like to connect with a counselor?</p>
+                <p class="privacy-note">🔒 Your information will only be shared if you choose to opt-in.</p>
+                <div class="form-group">
+                    <label for="userName">Name (Optional):</label>
+                    <input type="text" id="userName" placeholder="You can remain anonymous">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email (Optional):</label>
+                    <input type="email" id="userEmail" placeholder="For counselor to reach out">
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">Phone (Optional):</label>
+                    <input type="tel" id="userPhone" placeholder="For counselor to reach out">
+                </div>
+                <div class="modal-actions">
+                    <button id="submitCounselor" class="primary-btn">Request Support</button>
+                    <button id="declineCounselor" class="secondary-btn">Not Right Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Modal -->
+        <div class="modal" id="resourcesModal">
+            <div class="modal-content">
+                <span class="close" id="closeResources">&times;</span>
+                <h2>📚 Mental Health Resources</h2>
+                <div class="resources-list">
+                    <div class="resource-item">
+                        <h3>🌐 Crisis Text Line</h3>
+                        <p>Text HOME to 741741 for 24/7 crisis support</p>
+                    </div>
+                    <div class="resource-item">
+                        <h3>📞 National Suicide Prevention Lifeline</h3>
+                        <p>Call 988 for free, confidential support</p>
+                    </div>
+                    <div class="resource-item">
+                        <h3>💬 Campus Counseling</h3>
+                        <p>Contact your campus counseling center</p>
+                    </div>
+                    <div class="resource-item">
+                        <h3>📖 Self-Help Resources</h3>
+                        <p>Mindfulness exercises, breathing techniques, and more</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile & Analytics Modal -->
+        <div class="modal" id="profileModal">
+            <div class="modal-content large-modal">
+                <span class="close" id="closeProfile">&times;</span>
+                <h2>👤 Profile & Analytics</h2>
+                <div class="profile-content">
+                    <div class="profile-section">
+                        <h3>Account Information</h3>
+                        <div class="account-info" id="accountInfo">
+                            <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+                            <p><strong>Member Since:</strong> <span id="memberSince">Loading...</span></p>
+                        </div>
+                    </div>
+                    <div class="profile-section">
+                        <h3>Mood Analytics</h3>
+                        <div class="analytics-container">
+                            <div class="chart-container">
+                                <canvas id="moodLineChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="moodPieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-section">
+                        <h3>Statistics</h3>
+                        <div class="stats-grid" id="statsGrid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="totalConversations">0</div>
+                                <div class="stat-label">Total Conversations</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="totalJournalEntries">0</div>
+                                <div class="stat-label">Journal Entries</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="avgSentiment">0</div>
+                                <div class="stat-label">Avg. Sentiment</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="mostCommonMood">-</div>
+                                <div class="stat-label">Most Common Mood</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mood Calendar Modal -->
+        <div class="modal" id="calendarModal">
+            <div class="modal-content large-modal">
+                <span class="close" id="closeCalendar">&times;</span>
+                <h2>📅 Mood Calendar</h2>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn" id="prevMonth">←</button>
+                        <h3 id="calendarMonthYear"></h3>
+                        <button class="calendar-nav-btn" id="nextMonth">→</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                    <div class="calendar-legend">
+                        <div class="legend-item"><span class="legend-color great"></span> Great</div>
+                        <div class="legend-item"><span class="legend-color good"></span> Good</div>
+                        <div class="legend-item"><span class="legend-color okay"></span> Okay</div>
+                        <div class="legend-item"><span class="legend-color not-great"></span> Not Great</div>
+                        <div class="legend-item"><span class="legend-color struggling"></span> Struggling</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🔒 All conversations are anonymous and secure</p>
+            <p>Powered by Google Cloud & Dialogflow</p>
+        </footer>
+    </div>
+
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { 
+            getAuth, 
+            signInAnonymously, 
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signOut,
+            onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        
+        window.firebaseModules = { 
+            initializeApp, 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            serverTimestamp, 
+            getAuth, 
+            signInAnonymously,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signOut,
+            onAuthStateChanged
+        };
+    </script>
+    
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    <script src="check-config.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="gemini-service.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
